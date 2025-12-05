@@ -59,9 +59,9 @@ export const siteConfig: SiteConfig = {
   ],
   
   footerNav: [
-    { label: "Contacto", href: "#" },
+    { label: "Contacto", href: "#contacto" },
     { label: "GitHub", href: "https://github.com/RadikeCosa/med-tools" },
-    { label: "Más herramientas", href: "#" },
+    { label: "Más herramientas", href: "#herramientas" },
   ],
   
   sections: [
