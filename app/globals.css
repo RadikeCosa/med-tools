@@ -243,3 +243,58 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--foreground-muted);
 }
+
+/* Additional utility classes for text colors */
+.text-strong {
+  color: var(--foreground-strong);
+}
+
+.text-success {
+  color: var(--success);
+}
+
+.text-error {
+  color: var(--error);
+}
+
+.text-warning {
+  color: var(--warning);
+}
+
+.text-info {
+  color: var(--info);
+}
+
+/* Background utilities */
+.bg-success-light {
+  background-color: var(--success-light);
+}
+
+.bg-error-light {
+  background-color: var(--error-light);
+}
+
+.bg-warning-light {
+  background-color: var(--warning-light);
+}
+
+.bg-info-light {
+  background-color: var(--info-light);
+}
+
+.bg-gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.bg-gradient-accent {
+  background: var(--gradient-accent);
+}
+
+/* Border utilities */
+.border-default {
+  border-color: var(--border-color);
+}
+
+.border-dark {
+  border-color: var(--border-color-dark);
+}

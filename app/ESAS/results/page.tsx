@@ -24,25 +24,20 @@ export default function ESASResultsPage() {
       <nav className="mb-6 flex items-center gap-2 text-sm">
         <Link
           href="/"
-          className="flex items-center gap-1 transition-colors"
-          style={{ color: "var(--foreground-muted)" }}
+          className="flex items-center gap-1 text-muted transition-colors hover:opacity-80"
         >
           <HomeIcon className="w-4 h-4" />
           Inicio
         </Link>
-        <span style={{ color: "var(--foreground-muted)" }}>/</span>
+        <span className="text-muted">/</span>
         <Link
           href="/ESAS"
-          className="transition-colors hover:underline"
-          style={{ color: "var(--foreground-muted)" }}
+          className="text-muted transition-colors hover:underline hover:opacity-80"
         >
           ESAS
         </Link>
-        <span style={{ color: "var(--foreground-muted)" }}>/</span>
-        <span
-          style={{ color: "var(--foreground-strong)" }}
-          className="font-medium"
-        >
+        <span className="text-muted">/</span>
+        <span className="text-strong font-medium">
           Resultados
         </span>
       </nav>
@@ -50,16 +45,10 @@ export default function ESASResultsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1
-            className="text-2xl font-bold"
-            style={{ color: "var(--foreground-strong)" }}
-          >
+          <h1 className="text-2xl font-bold text-strong">
             Registros ESAS
           </h1>
-          <p
-            className="text-sm mt-1"
-            style={{ color: "var(--foreground-muted)" }}
-          >
+          <p className="text-sm mt-1 text-muted">
             {mounted ? (
               <>
                 {assessments.length} evaluación
@@ -73,8 +62,7 @@ export default function ESASResultsPage() {
         </div>
         <Link
           href="/ESAS"
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white rounded-lg transition-all hover:opacity-90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-          style={{ background: "var(--gradient-accent)" }}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white rounded-lg transition-all hover:opacity-90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500/50 bg-gradient-accent"
         >
           <PlusIcon className="w-4 h-4" />
           Nueva evaluación
@@ -82,37 +70,17 @@ export default function ESASResultsPage() {
       </div>
 
       {assessments.length === 0 ? (
-        <div
-          className="text-center py-16 px-4 rounded-xl border-2 border-dashed"
-          style={{
-            borderColor: "var(--border-color)",
-            background: "var(--background-secondary)",
-          }}
-        >
-          <EmptyDocumentIcon
-            className="w-12 h-12 mx-auto mb-4"
-            style={{ color: "var(--foreground-muted)" }}
-          />
-          <p
-            className="text-lg font-medium"
-            style={{ color: "var(--foreground)" }}
-          >
+        <div className="text-center py-16 px-4 rounded-xl border-2 border-dashed border-default bg-secondary">
+          <EmptyDocumentIcon className="w-12 h-12 mx-auto mb-4 text-muted" />
+          <p className="text-lg font-medium text-foreground">
             No hay evaluaciones guardadas
           </p>
-          <p
-            className="mt-2 text-sm"
-            style={{ color: "var(--foreground-muted)" }}
-          >
+          <p className="mt-2 text-sm text-muted">
             Completa el formulario ESAS para comenzar a registrar evaluaciones.
           </p>
           <Link
             href="/ESAS"
-            className="inline-flex items-center gap-2 mt-4 px-4 py-2 text-sm font-medium rounded-lg transition-colors"
-            style={{
-              color: "var(--accent)",
-              background: "var(--background)",
-              border: "1px solid var(--border-color)",
-            }}
+            className="inline-flex items-center gap-2 mt-4 px-4 py-2 text-sm font-medium rounded-lg transition-colors text-accent bg-background border border-default hover:opacity-80"
           >
             <PlusIcon className="w-4 h-4" />
             Crear primera evaluación
@@ -122,17 +90,10 @@ export default function ESASResultsPage() {
         <>
           <ESASResultList assessments={assessments} onDelete={deleteOne} />
 
-          <div
-            className="flex justify-end mt-8 pt-6 border-t"
-            style={{ borderColor: "var(--border-color)" }}
-          >
+          <div className="flex justify-end mt-8 pt-6 border-t border-default">
             <button
               onClick={deleteAll}
-              className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-red-500/50"
-              style={{
-                color: "var(--error)",
-                background: "var(--error-light)",
-              }}
+              className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-red-500/50 text-error bg-error-light hover:opacity-80"
             >
               <TrashIcon className="w-4 h-4" />
               Borrar todos los registros

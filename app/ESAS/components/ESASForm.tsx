@@ -118,8 +118,7 @@ export default function ESASForm() {
     <form
       aria-label={ESAS_FORM_TEXT.title}
       onSubmit={handleSubmit}
-      className="max-w-6xl mx-auto rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
-      style={{ background: "var(--background)", color: "var(--foreground)" }}
+      className="max-w-6xl mx-auto rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden bg-background text-foreground"
     >
       {/* Header */}
       <div className="bg-linear-to-r from-blue-600 to-blue-700 px-6 py-5">
@@ -140,8 +139,7 @@ export default function ESASForm() {
             <div>
               <label
                 htmlFor="datetime"
-                className="font-medium text-sm block mb-2"
-                style={{ color: "var(--foreground-strong)" }}
+                className="font-medium text-sm block mb-2 text-strong"
               >
                 Fecha y hora
               </label>
@@ -152,19 +150,14 @@ export default function ESASForm() {
                 onChange={(e) => setDateTime(e.target.value)}
                 required
                 max={new Date().toISOString().slice(0, 16)}
-                className="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-sm transition-all"
-                style={{
-                  background: "var(--background)",
-                  color: "var(--foreground)",
-                }}
+                className="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-sm transition-all bg-background text-foreground"
               />
             </div>
 
             <div>
               <label
                 htmlFor="patient"
-                className="font-medium text-sm block mb-2"
-                style={{ color: "var(--foreground-strong)" }}
+                className="font-medium text-sm block mb-2 text-strong"
               >
                 Paciente
               </label>
@@ -175,11 +168,7 @@ export default function ESASForm() {
                   onChange={(e) => setPatient(e.target.value)}
                   required
                   disabled={entitiesLoading || patients.length === 0}
-                  className="flex-1 px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-sm transition-all disabled:opacity-50"
-                  style={{
-                    background: "var(--background)",
-                    color: "var(--foreground)",
-                  }}
+                  className="flex-1 px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-sm transition-all disabled:opacity-50 bg-background text-foreground"
                 >
                   {patients.length === 0 ? (
                     <option value="">Sin pacientes</option>
@@ -246,8 +235,7 @@ export default function ESASForm() {
           <div>
             <label
               htmlFor="professional"
-              className="font-medium text-sm block mb-2"
-              style={{ color: "var(--foreground-strong)" }}
+              className="font-medium text-sm block mb-2 text-strong"
             >
               Profesional responsable
             </label>
@@ -257,11 +245,7 @@ export default function ESASForm() {
                 value={professional}
                 onChange={(e) => setProfessional(e.target.value)}
                 disabled={entitiesLoading || professionals.length === 0}
-                className="flex-1 px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-sm transition-all disabled:opacity-50"
-                style={{
-                  background: "var(--background)",
-                  color: "var(--foreground)",
-                }}
+                className="flex-1 px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-sm transition-all disabled:opacity-50 bg-background text-foreground"
               >
                 {professionals.length === 0 ? (
                   <option value="">Sin profesionales</option>

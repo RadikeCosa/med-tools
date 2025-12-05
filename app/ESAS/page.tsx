@@ -11,14 +11,13 @@ export default function ESASPage() {
       <nav className="mb-6 flex items-center gap-2 text-sm">
         <Link
           href="/"
-          className="flex items-center gap-1 transition-colors"
-          style={{ color: "var(--foreground-muted)" }}
+          className="flex items-center gap-1 text-muted transition-colors hover:opacity-80"
         >
           <HomeIcon className="w-4 h-4" />
           Inicio
         </Link>
-        <span style={{ color: "var(--foreground-muted)" }}>/</span>
-        <span style={{ color: "var(--foreground-strong)" }} className="font-medium">
+        <span className="text-muted">/</span>
+        <span className="text-strong font-medium">
           ESAS Assessment
         </span>
       </nav>
@@ -29,12 +28,7 @@ export default function ESASPage() {
       <div className="max-w-2xl mx-auto mt-6 flex justify-center">
         <Link
           href="/ESAS/results"
-          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors"
-          style={{
-            color: "var(--accent)",
-            background: "var(--background-secondary)",
-            border: "1px solid var(--border-color)",
-          }}
+          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors text-accent bg-secondary border border-default hover:opacity-80"
         >
           <DocumentChartIcon className="w-4 h-4" />
           Ver resultados guardados
