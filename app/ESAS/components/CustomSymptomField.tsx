@@ -1,5 +1,5 @@
 import React from "react";
-import { CustomSymptom } from "../esas.types";
+import { CustomSymptom, MAX_CUSTOM_SYMPTOM_LABEL_LENGTH } from "../esas.types";
 import { getSeverityColor } from "../utils";
 import { TrashIcon } from "@/app/icons";
 
@@ -26,10 +26,13 @@ export default function CustomSymptomField({
             type="text"
             value={symptom.label}
             onChange={(e) =>
-              onUpdate({ ...symptom, label: e.target.value.slice(0, 50) })
+              onUpdate({ 
+                ...symptom, 
+                label: e.target.value.slice(0, MAX_CUSTOM_SYMPTOM_LABEL_LENGTH) 
+              })
             }
             placeholder="Nombre del síntoma (ej: sequedad de boca)"
-            maxLength={50}
+            maxLength={MAX_CUSTOM_SYMPTOM_LABEL_LENGTH}
             className="flex-1 px-3 py-2 text-sm rounded-lg border border-blue-300 dark:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 bg-white dark:bg-gray-800 text-foreground"
           />
           <button

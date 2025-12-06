@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { ESASSymptomNames } from "../esas.types";
+import { ESASSymptomNames, MAX_CUSTOM_SYMPTOMS } from "../esas.types";
 import {
   ESAS_SYMPTOM_LABELS,
   ESAS_FORM_TEXT,
@@ -237,14 +237,14 @@ export default function ESASForm() {
           </div>
 
           {/* Add custom symptom button */}
-          {customSymptoms.length < 3 && (
+          {customSymptoms.length < MAX_CUSTOM_SYMPTOMS && (
             <button
               type="button"
               onClick={addCustomSymptom}
               className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/30"
             >
               <PlusIcon className="w-4 h-4" />
-              Agregar síntoma personalizado ({customSymptoms.length}/3)
+              Agregar síntoma personalizado ({customSymptoms.length}/{MAX_CUSTOM_SYMPTOMS})
             </button>
           )}
         </section>

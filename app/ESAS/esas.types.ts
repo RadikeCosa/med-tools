@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+// Custom symptoms configuration
+export const MAX_CUSTOM_SYMPTOM_LABEL_LENGTH = 50;
+export const MAX_CUSTOM_SYMPTOMS = 3;
+
 // Orden estándar ESAS-r (sin "otros" - ahora es dinámico)
 export const ESASSymptomNames = [
   "dolor",
@@ -30,7 +34,7 @@ export const ESASSymptomSchema = z.object({
 // Custom symptom schema
 export const CustomSymptomSchema = z.object({
   id: z.string(),
-  label: z.string().min(1).max(50),
+  label: z.string().min(1).max(MAX_CUSTOM_SYMPTOM_LABEL_LENGTH),
   value: z.number().min(0).max(10),
 });
 
@@ -39,7 +43,7 @@ export const ESASAssessmentSchema = z.object({
   timestamp: z.number(),
   dateTime: z.string(),
   symptoms: ESASSymptomSchema,
-  customSymptoms: z.array(CustomSymptomSchema).max(3).optional(),
+  customSymptoms: z.array(CustomSymptomSchema).max(MAX_CUSTOM_SYMPTOMS).optional(),
   notes: z.string().optional(),
   patient: z.string(),
   professional: z.string(),

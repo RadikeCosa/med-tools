@@ -5,6 +5,7 @@ import {
   ESASSymptomNames,
   ESASAssessmentSchema,
   CustomSymptom,
+  MAX_CUSTOM_SYMPTOMS,
 } from "../esas.types";
 import { saveAssessment } from "../esasStorage";
 
@@ -49,7 +50,7 @@ function reducer(state: State, action: Action): State {
         symptoms: { ...state.symptoms, [action.symptom]: action.value },
       };
     case "addCustomSymptom":
-      if (state.customSymptoms.length >= 3) return state;
+      if (state.customSymptoms.length >= MAX_CUSTOM_SYMPTOMS) return state;
       return {
         ...state,
         customSymptoms: [
