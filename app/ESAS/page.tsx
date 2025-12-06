@@ -25,7 +25,7 @@ export default function ESASPage() {
       <ESASForm />
 
       {/* Quick navigation */}
-      <div className="max-w-2xl mx-auto mt-6 flex justify-center">
+      <div className="max-w-2xl mx-auto mt-8 md:mt-12 flex justify-center">
         <Link
           href="/ESAS/results"
           className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors text-accent bg-secondary border border-default hover:opacity-80"

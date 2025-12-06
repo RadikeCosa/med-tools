@@ -18,7 +18,6 @@ export const ESAS_SYMPTOM_LABELS: Record<string, string> = {
   ansiedad: "Nervioso",
   sueño: "Dificultad para dormir",
   bienestar: "Sentirse bien",
-  otros: "Otro problema",
 };
 
 // Descripciones del estado mínimo (valor 0) para cada síntoma
@@ -33,7 +32,6 @@ export const ESAS_SYMPTOM_MIN_LABELS: Record<string, string> = {
   ansiedad: "Nada nervioso (intranquilidad, ansiedad)",
   sueño: "Duermo perfectamente",
   bienestar: "Sentirse perfectamente (sensación de bienestar)",
-  otros: "Nada - Otro problema (por ej; sequedad de boca)",
 };
 
 // Descripciones del estado máximo (valor 10) para cada síntoma
@@ -48,7 +46,6 @@ export const ESAS_SYMPTOM_MAX_LABELS: Record<string, string> = {
   ansiedad: "Lo más nervioso que se pueda imaginar",
   sueño: "La mayor dificultad para dormir que se pueda imaginar",
   bienestar: "Sentirse lo peor que se pueda imaginar",
-  otros: "Lo peor posible",
 };
 
 export const ESAS_FORM_TEXT = {

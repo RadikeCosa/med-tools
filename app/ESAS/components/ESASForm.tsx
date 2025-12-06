@@ -14,6 +14,7 @@ import { useESAS } from "../hooks/useESAS";
 import { useEntities } from "../hooks/useEntities";
 import { PlusIcon, ErrorIcon, SuccessIcon } from "@/app/icons";
 import SymptomSlider from "./SymptomSlider";
+import CustomSymptomField from "./CustomSymptomField";
 import NotesField from "./NotesField";
 import FormActions from "./FormActions";
 import StatusMessage from "./StatusMessage";
@@ -59,11 +60,15 @@ export default function ESASForm() {
 
   const {
     symptoms,
+    customSymptoms,
     notes,
     saving,
     error,
     success,
     updateSymptom,
+    addCustomSymptom,
+    updateCustomSymptom,
+    removeCustomSymptom,
     setNotes,
     saveAssessment,
     reset,
@@ -207,7 +212,7 @@ export default function ESASForm() {
           </div>
 
           {/* Symptoms table */}
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-900/50">
+          <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800/30">
             {ESASSymptomNames.map((symptom) => (
               <SymptomSlider
                 key={symptom}
@@ -219,7 +224,29 @@ export default function ESASForm() {
                 maxLabel={ESAS_SYMPTOM_MAX_LABELS[symptom]}
               />
             ))}
+            
+            {/* Custom symptoms */}
+            {customSymptoms.map((symptom) => (
+              <CustomSymptomField
+                key={symptom.id}
+                symptom={symptom}
+                onUpdate={(updated) => updateCustomSymptom(symptom.id, updated)}
+                onRemove={() => removeCustomSymptom(symptom.id)}
+              />
+            ))}
           </div>
+
+          {/* Add custom symptom button */}
+          {customSymptoms.length < 3 && (
+            <button
+              type="button"
+              onClick={addCustomSymptom}
+              className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+            >
+              <PlusIcon className="w-4 h-4" />
+              Agregar síntoma personalizado ({customSymptoms.length}/3)
+            </button>
+          )}
         </section>
 
         {/* Notas y profesional */}
