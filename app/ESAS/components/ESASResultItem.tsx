@@ -76,6 +76,30 @@ export default function ESASResultItem({
           ))}
         </div>
 
+        {/* Custom Symptoms */}
+        {assessment.customSymptoms && assessment.customSymptoms.length > 0 && (
+          <>
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3 mt-4">
+              Síntomas Personalizados
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+              {assessment.customSymptoms.map((symptom) => (
+                <div
+                  key={symptom.id}
+                  className={`px-3 py-2 rounded-lg text-center ${getSeverityBadgeColor(
+                    symptom.value
+                  )}`}
+                >
+                  <span className="text-xs font-medium block truncate">
+                    {symptom.label}
+                  </span>
+                  <span className="text-lg font-bold">{symptom.value}</span>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
         {/* Notes */}
         {assessment.notes && (
           <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
