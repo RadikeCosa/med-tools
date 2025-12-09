@@ -335,74 +335,78 @@ export default function ESASForm() {
 
           {/* Add custom symptom button */}
           {customSymptoms.length < MAX_CUSTOM_SYMPTOMS && (
-            <button
-              type="button"
-              onClick={() => setShowCustomSymptomModal(true)}
-              className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors border"
-              style={{
-                color: "var(--primary)",
-                background: "var(--info-light)",
-                borderColor: "var(--primary)",
-              }}
-              aria-label="Agregar síntoma personalizado"
-            >
-              <PlusIcon className="w-4 h-4" />
-              Agregar síntoma personalizado ({customSymptoms.length}/{MAX_CUSTOM_SYMPTOMS})
-            </button>
+            <div className="mt-3 flex justify-center md:justify-start">
+              <button
+                type="button"
+                onClick={() => setShowCustomSymptomModal(true)}
+                className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors border hover:opacity-90"
+                style={{
+                  color: "var(--primary)",
+                  background: "var(--info-light)",
+                  borderColor: "var(--primary)",
+                }}
+                aria-label="Agregar síntoma personalizado"
+              >
+                <PlusIcon className="w-4 h-4" />
+                <span>Agregar síntoma personalizado ({customSymptoms.length}/{MAX_CUSTOM_SYMPTOMS})</span>
+              </button>
+            </div>
           )}
         </section>
 
         {/* Notas y profesional */}
         <section className="space-y-4">
-          <NotesField
-            value={notes}
-            onChange={(val) => {
-              if (val.length <= 500) setNotes(val);
-            }}
-            label={ESAS_FORM_TEXT.notes}
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <NotesField
+              value={notes}
+              onChange={(val) => {
+                if (val.length <= 500) setNotes(val);
+              }}
+              label={ESAS_FORM_TEXT.notes}
+            />
 
-          <div>
-            <label
-              htmlFor="professional"
-              className="font-medium text-sm block mb-2"
-              style={{ color: "var(--foreground-strong)" }}
-            >
-              Profesional responsable
-            </label>
-            <div className="flex gap-2">
-              <select
-                id="professional"
-                value={professional}
-                onChange={(e) => setProfessional(e.target.value)}
-                disabled={entitiesLoading || professionals.length === 0}
-                className="flex-1 px-3 py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm transition-all disabled:opacity-50"
-                style={{
-                  background: "var(--background)",
-                  color: "var(--foreground)",
-                  borderColor: "var(--border-color)",
-                }}
+            <div>
+              <label
+                htmlFor="professional"
+                className="font-medium text-sm block mb-2"
+                style={{ color: "var(--foreground-strong)" }}
               >
-                {professionals.length === 0 ? (
-                  <option value="">Sin profesionales</option>
-                ) : (
-                  professionals.map((p) => (
-                    <option key={p.id} value={p.name}>
-                      {p.name}
-                    </option>
-                  ))
-                )}
-              </select>
-              <button
-                type="button"
-                onClick={() => setShowProfessionalModal(true)}
-                className="px-3 py-2.5 rounded-lg text-white text-sm font-medium transition-colors flex items-center gap-1"
-                style={{ background: "var(--primary)" }}
-                title="Crear nuevo profesional"
-                aria-label="Crear nuevo profesional"
-              >
-                <PlusIcon className="w-4 h-4" />
-              </button>
+                Profesional responsable
+              </label>
+              <div className="flex gap-2">
+                <select
+                  id="professional"
+                  value={professional}
+                  onChange={(e) => setProfessional(e.target.value)}
+                  disabled={entitiesLoading || professionals.length === 0}
+                  className="flex-1 px-3 py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm transition-all disabled:opacity-50"
+                  style={{
+                    background: "var(--background)",
+                    color: "var(--foreground)",
+                    borderColor: "var(--border-color)",
+                  }}
+                >
+                  {professionals.length === 0 ? (
+                    <option value="">Sin profesionales</option>
+                  ) : (
+                    professionals.map((p) => (
+                      <option key={p.id} value={p.name}>
+                        {p.name}
+                      </option>
+                    ))
+                  )}
+                </select>
+                <button
+                  type="button"
+                  onClick={() => setShowProfessionalModal(true)}
+                  className="px-3 py-2.5 rounded-lg text-white text-sm font-medium transition-colors flex items-center gap-1"
+                  style={{ background: "var(--primary)" }}
+                  title="Crear nuevo profesional"
+                  aria-label="Crear nuevo profesional"
+                >
+                  <PlusIcon className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
         </section>
