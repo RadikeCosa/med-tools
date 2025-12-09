@@ -103,9 +103,7 @@ export default function ESASForm() {
       const patientObj = patients.find((p) => p.name === patient);
       if (patientObj) {
         const existingSymptoms = loadCustomSymptoms(patientObj.id);
-        const updated = existingSymptoms.filter((s) => s.id !== symptom.id);
-        updated.push(symptom);
-        saveCustomSymptoms(patientObj.id, updated);
+        saveCustomSymptoms(patientObj.id, [...existingSymptoms.filter((s) => s.id !== symptom.id), symptom]);
       }
     }
   };

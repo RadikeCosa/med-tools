@@ -110,7 +110,8 @@ export default function CreateCustomSymptomModal({
           <div>
             <label
               htmlFor="symptom-name"
-              className="font-medium text-sm block mb-2 text-strong"
+              className="font-medium text-sm block mb-2"
+              style={{ color: "var(--foreground-strong)" }}
             >
               Nombre del síntoma
             </label>
@@ -135,7 +136,8 @@ export default function CreateCustomSymptomModal({
           <div>
             <label
               htmlFor="symptom-legend"
-              className="font-medium text-sm block mb-2 text-strong"
+              className="font-medium text-sm block mb-2"
+              style={{ color: "var(--foreground-strong)" }}
             >
               Leyenda (opcional)
             </label>
