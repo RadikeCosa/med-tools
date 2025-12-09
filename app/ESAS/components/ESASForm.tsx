@@ -14,7 +14,7 @@ import {
 import { useESAS } from "../hooks/useESAS";
 import { useEntities } from "../hooks/useEntities";
 import { loadCustomSymptoms, saveCustomSymptoms, removeCustomSymptom as removeCustomSymptomFromStorage } from "../esasStorage";
-import { PlusIcon, ErrorIcon, SuccessIcon, DocumentIcon } from "@/app/icons";
+import { PlusIcon, DocumentIcon, ErrorCircleIcon, SuccessCheckIcon } from "@/app/icons";
 import SymptomSlider from "./SymptomSlider";
 import CustomSymptomField from "./CustomSymptomField";
 import NotesField from "./NotesField";
@@ -22,7 +22,6 @@ import FormActions from "./FormActions";
 import StatusMessage from "./StatusMessage";
 import CreateEntityModal from "./CreateEntityModal";
 import CreateCustomSymptomModal from "./CreateCustomSymptomModal";
-import { ErrorCircleIcon, SuccessCheckIcon } from "../../icons";
 
 export default function ESASForm() {
   const router = useRouter();
@@ -57,7 +56,6 @@ export default function ESASForm() {
     error,
     success,
     updateSymptom,
-    addCustomSymptom,
     updateCustomSymptom,
     removeCustomSymptom,
     loadCustomSymptomsFromStorage,
@@ -183,11 +181,12 @@ export default function ESASForm() {
     <form
       aria-label={ESAS_FORM_TEXT.title}
       onSubmit={handleSubmit}
-      className="max-w-6xl mx-auto rounded-xl shadow-md border overflow-hidden"
+      className="max-w-6xl mx-auto overflow-hidden"
       style={{
         background: "var(--background)",
-        borderColor: "var(--border-color)",
-        boxShadow: "var(--shadow-md)",
+        borderRadius: "var(--radius-md)",
+        boxShadow: "var(--shadow-sm)",
+        border: "1px solid var(--border-color)",
       }}
     >
       {/* Header */}
@@ -423,7 +422,6 @@ export default function ESASForm() {
             role="alert"
             aria-live="assertive"
           >
-            <ErrorIcon className="w-5 h-5 flex-shrink-0" />
             <ErrorCircleIcon className="w-5 h-5 shrink-0" />
             <span className="text-sm">{formError}</span>
           </div>
@@ -440,7 +438,6 @@ export default function ESASForm() {
             role="status"
             aria-live="polite"
           >
-            <SuccessIcon className="w-5 h-5 flex-shrink-0" />
             <SuccessCheckIcon className="w-5 h-5 shrink-0" />
             <span className="text-sm">¡Evaluación guardada exitosamente!</span>
           </div>
