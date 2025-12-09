@@ -23,6 +23,7 @@ type Action =
   | { type: "addCustomSymptom" }
   | { type: "updateCustomSymptom"; id: string; symptom: CustomSymptom }
   | { type: "removeCustomSymptom"; id: string }
+  | { type: "loadCustomSymptoms"; symptoms: CustomSymptom[] }
   | { type: "setNotes"; value: string }
   | { type: "saveStart" }
   | { type: "saveSuccess" }
@@ -74,6 +75,11 @@ function reducer(state: State, action: Action): State {
         ...state,
         customSymptoms: state.customSymptoms.filter((s) => s.id !== action.id),
       };
+    case "loadCustomSymptoms":
+      return {
+        ...state,
+        customSymptoms: action.symptoms,
+      };
     case "setNotes":
       return { ...state, notes: action.value };
     case "saveStart":
@@ -112,6 +118,10 @@ export function useESAS() {
 
   const removeCustomSymptom = useCallback((id: string) => {
     dispatch({ type: "removeCustomSymptom", id });
+  }, []);
+
+  const loadCustomSymptomsFromStorage = useCallback((symptoms: CustomSymptom[]) => {
+    dispatch({ type: "loadCustomSymptoms", symptoms });
   }, []);
 
   const setNotes = useCallback((value: string) => {
@@ -163,6 +173,7 @@ export function useESAS() {
     addCustomSymptom,
     updateCustomSymptom,
     removeCustomSymptom,
+    loadCustomSymptomsFromStorage,
     setNotes,
     saveAssessment: save,
     reset,

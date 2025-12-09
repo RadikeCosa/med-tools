@@ -7,6 +7,7 @@ interface FormActionsProps {
   showReset?: boolean;
   saveLabel: string;
   resetLabel?: string;
+  className?: string;
 }
 
 export default function FormActions({
@@ -15,13 +16,17 @@ export default function FormActions({
   showReset = false,
   saveLabel,
   resetLabel = "Nueva evaluación",
+  className = "",
 }: FormActionsProps) {
   return (
-    <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+    <div className={`flex flex-col sm:flex-row gap-3 pt-4 ${className}`} style={{ borderTop: "1px solid var(--border-color)" }}>
       <button
         type="submit"
         disabled={saving}
-        className="flex-1 h-12 text-base font-semibold bg-blue-600 text-white rounded-lg shadow-md transition-all hover:bg-blue-700 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2"
+        className="flex-1 h-12 text-base font-semibold text-white rounded-lg shadow-md transition-all hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2"
+        style={{
+          background: saving ? "var(--foreground-muted)" : "var(--primary)",
+        }}
         aria-label={saveLabel}
       >
         {saving ? (
@@ -37,7 +42,12 @@ export default function FormActions({
         <button
           type="button"
           onClick={onReset}
-          className="flex-1 sm:flex-none h-12 px-6 text-base font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-gray-500/50"
+          className="flex-1 sm:flex-none h-12 px-6 text-base font-medium rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2"
+          style={{
+            background: "var(--secondary)",
+            color: "var(--foreground)",
+          }}
+          aria-label={resetLabel}
         >
           {resetLabel}
         </button>

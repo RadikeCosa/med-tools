@@ -1,4 +1,4 @@
-import { ESASAssessment } from "./esas.types";
+import { ESASAssessment, CustomSymptom } from "./esas.types";
 import {
   ESAS_STORAGE_KEY,
   ESAS_DATA_VERSION,
@@ -57,6 +57,55 @@ export function clearAllAssessments() {
     localStorage.removeItem(ESAS_STORAGE_KEY);
     return true;
   } catch {
+    return false;
+  }
+}
+
+// Custom symptoms storage functions
+function getCustomSymptomsKey(patientId: string): string {
+  return `esas:custom_symptoms:${patientId}`;
+}
+
+export function loadCustomSymptoms(patientId: string): CustomSymptom[] {
+  try {
+    if (!patientId) return [];
+    const key = getCustomSymptomsKey(patientId);
+    const raw = localStorage.getItem(key);
+    if (!raw) return [];
+    const symptoms = JSON.parse(raw);
+    return Array.isArray(symptoms) ? symptoms : [];
+  } catch (error) {
+    console.error("Error loading custom symptoms:", error);
+    return [];
+  }
+}
+
+export function saveCustomSymptoms(
+  patientId: string,
+  symptoms: CustomSymptom[]
+): boolean {
+  try {
+    if (!patientId) return false;
+    const key = getCustomSymptomsKey(patientId);
+    localStorage.setItem(key, JSON.stringify(symptoms));
+    return true;
+  } catch (error) {
+    console.error("Error saving custom symptoms:", error);
+    return false;
+  }
+}
+
+export function removeCustomSymptom(
+  patientId: string,
+  symptomId: string
+): boolean {
+  try {
+    if (!patientId) return false;
+    const symptoms = loadCustomSymptoms(patientId);
+    const filtered = symptoms.filter((s) => s.id !== symptomId);
+    return saveCustomSymptoms(patientId, filtered);
+  } catch (error) {
+    console.error("Error removing custom symptom:", error);
     return false;
   }
 }

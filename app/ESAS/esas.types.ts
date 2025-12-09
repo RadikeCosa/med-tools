@@ -35,7 +35,9 @@ export const ESASSymptomSchema = z.object({
 export const CustomSymptomSchema = z.object({
   id: z.string(),
   label: z.string().min(1).max(MAX_CUSTOM_SYMPTOM_LABEL_LENGTH),
+  legend: z.string().max(MAX_CUSTOM_SYMPTOM_LABEL_LENGTH).optional(),
   value: z.number().min(0).max(10),
+  custom: z.boolean().optional(),
 });
 
 export const ESASAssessmentSchema = z.object({

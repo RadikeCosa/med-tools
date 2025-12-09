@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ESASSymptomNames, MAX_CUSTOM_SYMPTOMS } from "../esas.types";
+import { ESASSymptomNames, MAX_CUSTOM_SYMPTOMS, CustomSymptom } from "../esas.types";
 import {
   ESAS_SYMPTOM_LABELS,
   ESAS_FORM_TEXT,
@@ -12,13 +13,15 @@ import {
 } from "../esas.constants";
 import { useESAS } from "../hooks/useESAS";
 import { useEntities } from "../hooks/useEntities";
-import { PlusIcon, ErrorIcon, SuccessIcon } from "@/app/icons";
+import { loadCustomSymptoms, saveCustomSymptoms, removeCustomSymptom as removeCustomSymptomFromStorage } from "../esasStorage";
+import { PlusIcon, ErrorIcon, SuccessIcon, DocumentIcon } from "@/app/icons";
 import SymptomSlider from "./SymptomSlider";
 import CustomSymptomField from "./CustomSymptomField";
 import NotesField from "./NotesField";
 import FormActions from "./FormActions";
 import StatusMessage from "./StatusMessage";
 import CreateEntityModal from "./CreateEntityModal";
+import CreateCustomSymptomModal from "./CreateCustomSymptomModal";
 import { ErrorCircleIcon, SuccessCheckIcon } from "../../icons";
 
 export default function ESASForm() {
@@ -28,6 +31,7 @@ export default function ESASForm() {
   const [showPatientModal, setShowPatientModal] = React.useState(false);
   const [showProfessionalModal, setShowProfessionalModal] =
     React.useState(false);
+  const [showCustomSymptomModal, setShowCustomSymptomModal] = React.useState(false);
 
   const [dateTime, setDateTime] = React.useState(() => {
     const now = new Date();
@@ -45,6 +49,41 @@ export default function ESASForm() {
   const [patient, setPatient] = React.useState("");
   const [professional, setProfessional] = React.useState("");
 
+  const {
+    symptoms,
+    customSymptoms,
+    notes,
+    saving,
+    error,
+    success,
+    updateSymptom,
+    addCustomSymptom,
+    updateCustomSymptom,
+    removeCustomSymptom,
+    loadCustomSymptomsFromStorage,
+    setNotes,
+    saveAssessment,
+    reset,
+  } = useESAS();
+
+  // Load custom symptoms for selected patient
+  React.useEffect(() => {
+    if (patient && patients.length > 0) {
+      const patientObj = patients.find((p) => p.name === patient);
+      if (patientObj) {
+        try {
+          const savedSymptoms = loadCustomSymptoms(patientObj.id);
+          loadCustomSymptomsFromStorage(savedSymptoms);
+        } catch (error) {
+          console.error("Error loading custom symptoms:", error);
+        }
+      }
+    } else if (!patient) {
+      // Clear custom symptoms when no patient is selected
+      loadCustomSymptomsFromStorage([]);
+    }
+  }, [patient, patients, loadCustomSymptomsFromStorage]);
+
   // Update selected patient/professional when entities are loaded
   React.useEffect(() => {
     if (!entitiesLoading && patients.length > 0 && !patient) {
@@ -58,21 +97,44 @@ export default function ESASForm() {
     }
   }, [entitiesLoading, professionals, professional]);
 
-  const {
-    symptoms,
-    customSymptoms,
-    notes,
-    saving,
-    error,
-    success,
-    updateSymptom,
-    addCustomSymptom,
-    updateCustomSymptom,
-    removeCustomSymptom,
-    setNotes,
-    saveAssessment,
-    reset,
-  } = useESAS();
+  // Handlers for custom symptoms
+  const handleCustomSave = (symptom: CustomSymptom) => {
+    if (patient && patients.length > 0) {
+      const patientObj = patients.find((p) => p.name === patient);
+      if (patientObj) {
+        const existingSymptoms = loadCustomSymptoms(patientObj.id);
+        const updated = existingSymptoms.filter((s) => s.id !== symptom.id);
+        updated.push(symptom);
+        saveCustomSymptoms(patientObj.id, updated);
+      }
+    }
+  };
+
+  const handleRemoveCustom = (id: string) => {
+    if (patient && patients.length > 0) {
+      const patientObj = patients.find((p) => p.name === patient);
+      if (patientObj) {
+        removeCustomSymptomFromStorage(patientObj.id, id);
+      }
+    }
+    removeCustomSymptom(id);
+  };
+
+  const handleCreateCustomSymptom = (symptom: CustomSymptom, saveForPatient: boolean) => {
+    // Add to current form state
+    const updatedSymptoms = [...customSymptoms, symptom];
+    loadCustomSymptomsFromStorage(updatedSymptoms);
+    
+    // Save to localStorage if requested
+    if (saveForPatient && patient && patients.length > 0) {
+      const patientObj = patients.find((p) => p.name === patient);
+      if (patientObj) {
+        const existingSymptoms = loadCustomSymptoms(patientObj.id);
+        existingSymptoms.push(symptom);
+        saveCustomSymptoms(patientObj.id, existingSymptoms);
+      }
+    }
+  };
 
   React.useEffect(() => {
     if (formError) {
@@ -123,20 +185,35 @@ export default function ESASForm() {
     <form
       aria-label={ESAS_FORM_TEXT.title}
       onSubmit={handleSubmit}
-      className="max-w-6xl mx-auto rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden bg-background text-foreground"
+      className="max-w-6xl mx-auto rounded-xl shadow-md border overflow-hidden"
+      style={{
+        background: "var(--background)",
+        borderColor: "var(--border-color)",
+        boxShadow: "var(--shadow-md)",
+      }}
     >
       {/* Header */}
-      <div className="bg-linear-to-r from-blue-600 to-blue-700 px-6 py-5">
-        <h1 className="text-xl font-bold text-white">{ESAS_FORM_TEXT.title}</h1>
-        <p className="text-blue-100 text-sm mt-1">
-          Escala de Evaluación de Síntomas de Edmonton
-        </p>
+      <div className="px-6 py-5 flex items-center justify-between" style={{ background: "var(--primary)" }}>
+        <div>
+          <h1 className="text-xl font-bold text-white">{ESAS_FORM_TEXT.title}</h1>
+          <p className="text-white/90 text-sm mt-1">
+            Escala de Evaluación de Síntomas de Edmonton
+          </p>
+        </div>
+        <Link
+          href="/ESAS/results"
+          className="btn btn-secondary flex items-center gap-2 text-sm"
+          aria-label="Ver resultados guardados"
+        >
+          <DocumentIcon className="w-4 h-4" />
+          Resultados guardados
+        </Link>
       </div>
 
       <div className="p-6 space-y-6">
         {/* Info del paciente y fecha */}
-        <section className="bg-gray-50 dark:bg-gray-800/30 rounded-xl p-4 space-y-4">
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+        <section className="rounded-xl p-4 space-y-4" style={{ background: "var(--background-secondary)" }}>
+          <h2 className="text-sm font-semibold uppercase tracking-wider" style={{ color: "var(--foreground-muted)" }}>
             Información General
           </h2>
 
@@ -144,7 +221,8 @@ export default function ESASForm() {
             <div>
               <label
                 htmlFor="datetime"
-                className="font-medium text-sm block mb-2 text-strong"
+                className="font-medium text-sm block mb-2"
+                style={{ color: "var(--foreground-strong)" }}
               >
                 Fecha y hora
               </label>
@@ -155,14 +233,20 @@ export default function ESASForm() {
                 onChange={(e) => setDateTime(e.target.value)}
                 required
                 max={new Date().toISOString().slice(0, 16)}
-                className="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-sm transition-all bg-background text-foreground"
+                className="w-full px-3 py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm transition-all"
+                style={{
+                  background: "var(--background)",
+                  color: "var(--foreground)",
+                  borderColor: "var(--border-color)",
+                }}
               />
             </div>
 
             <div>
               <label
                 htmlFor="patient"
-                className="font-medium text-sm block mb-2 text-strong"
+                className="font-medium text-sm block mb-2"
+                style={{ color: "var(--foreground-strong)" }}
               >
                 Paciente
               </label>
@@ -173,7 +257,12 @@ export default function ESASForm() {
                   onChange={(e) => setPatient(e.target.value)}
                   required
                   disabled={entitiesLoading || patients.length === 0}
-                  className="flex-1 px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-sm transition-all disabled:opacity-50 bg-background text-foreground"
+                  className="flex-1 px-3 py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm transition-all disabled:opacity-50"
+                  style={{
+                    background: "var(--background)",
+                    color: "var(--foreground)",
+                    borderColor: "var(--border-color)",
+                  }}
                 >
                   {patients.length === 0 ? (
                     <option value="">Sin pacientes</option>
@@ -188,8 +277,10 @@ export default function ESASForm() {
                 <button
                   type="button"
                   onClick={() => setShowPatientModal(true)}
-                  className="px-3 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium transition-colors hover:bg-blue-700 flex items-center gap-1"
+                  className="px-3 py-2.5 rounded-lg text-white text-sm font-medium transition-colors flex items-center gap-1"
+                  style={{ background: "var(--primary)" }}
                   title="Crear nuevo paciente"
+                  aria-label="Crear nuevo paciente"
                 >
                   <PlusIcon className="w-4 h-4" />
                 </button>
@@ -200,19 +291,25 @@ export default function ESASForm() {
 
         {/* Síntomas */}
         <section>
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+          <h2 className="text-sm font-semibold uppercase tracking-wider mb-3" style={{ color: "var(--foreground-muted)" }}>
             Evaluación de Síntomas
           </h2>
 
           {/* Instruction header */}
-          <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-            <p className="text-sm font-medium text-blue-800 dark:text-blue-200 italic">
+          <div className="mb-4 p-3 rounded-lg border" style={{
+            background: "var(--info-light)",
+            borderColor: "var(--info)",
+          }}>
+            <p className="text-sm font-medium italic" style={{ color: "var(--info)" }}>
               {ESAS_FORM_INSTRUCTION}
             </p>
           </div>
 
           {/* Symptoms table */}
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800/30">
+          <div className="border rounded-lg overflow-hidden" style={{
+            borderColor: "var(--border-color)",
+            background: "var(--background)",
+          }}>
             {ESASSymptomNames.map((symptom) => (
               <SymptomSlider
                 key={symptom}
@@ -231,7 +328,9 @@ export default function ESASForm() {
                 key={symptom.id}
                 symptom={symptom}
                 onUpdate={(updated) => updateCustomSymptom(symptom.id, updated)}
-                onRemove={() => removeCustomSymptom(symptom.id)}
+                onRemove={() => handleRemoveCustom(symptom.id)}
+                onSave={handleCustomSave}
+                patientId={patient && patients.find((p) => p.name === patient)?.id}
               />
             ))}
           </div>
@@ -240,8 +339,14 @@ export default function ESASForm() {
           {customSymptoms.length < MAX_CUSTOM_SYMPTOMS && (
             <button
               type="button"
-              onClick={addCustomSymptom}
-              className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+              onClick={() => setShowCustomSymptomModal(true)}
+              className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors border"
+              style={{
+                color: "var(--primary)",
+                background: "var(--info-light)",
+                borderColor: "var(--primary)",
+              }}
+              aria-label="Agregar síntoma personalizado"
             >
               <PlusIcon className="w-4 h-4" />
               Agregar síntoma personalizado ({customSymptoms.length}/{MAX_CUSTOM_SYMPTOMS})
@@ -262,7 +367,8 @@ export default function ESASForm() {
           <div>
             <label
               htmlFor="professional"
-              className="font-medium text-sm block mb-2 text-strong"
+              className="font-medium text-sm block mb-2"
+              style={{ color: "var(--foreground-strong)" }}
             >
               Profesional responsable
             </label>
@@ -272,7 +378,12 @@ export default function ESASForm() {
                 value={professional}
                 onChange={(e) => setProfessional(e.target.value)}
                 disabled={entitiesLoading || professionals.length === 0}
-                className="flex-1 px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-sm transition-all disabled:opacity-50 bg-background text-foreground"
+                className="flex-1 px-3 py-2.5 rounded-lg border focus:outline-none focus:ring-2 text-sm transition-all disabled:opacity-50"
+                style={{
+                  background: "var(--background)",
+                  color: "var(--foreground)",
+                  borderColor: "var(--border-color)",
+                }}
               >
                 {professionals.length === 0 ? (
                   <option value="">Sin profesionales</option>
@@ -287,8 +398,10 @@ export default function ESASForm() {
               <button
                 type="button"
                 onClick={() => setShowProfessionalModal(true)}
-                className="px-3 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium transition-colors hover:bg-blue-700 flex items-center gap-1"
+                className="px-3 py-2.5 rounded-lg text-white text-sm font-medium transition-colors flex items-center gap-1"
+                style={{ background: "var(--primary)" }}
                 title="Crear nuevo profesional"
+                aria-label="Crear nuevo profesional"
               >
                 <PlusIcon className="w-4 h-4" />
               </button>
@@ -299,7 +412,12 @@ export default function ESASForm() {
         {/* Mensajes de estado */}
         {formError && (
           <div
-            className="flex items-center gap-2 text-red-600 bg-red-50 dark:bg-red-900/20 rounded-lg px-4 py-3 border border-red-200 dark:border-red-800"
+            className="flex items-center gap-2 rounded-lg px-4 py-3 border"
+            style={{
+              color: "var(--error)",
+              background: "var(--error-light)",
+              borderColor: "var(--error)",
+            }}
             role="alert"
             aria-live="assertive"
           >
@@ -311,7 +429,12 @@ export default function ESASForm() {
 
         {showSuccess && !formError && (
           <div
-            className="flex items-center gap-2 text-green-700 bg-green-50 dark:bg-green-900/20 rounded-lg px-4 py-3 border border-green-200 dark:border-green-800"
+            className="flex items-center gap-2 rounded-lg px-4 py-3 border"
+            style={{
+              color: "var(--success)",
+              background: "var(--success-light)",
+              borderColor: "var(--success)",
+            }}
             role="status"
             aria-live="polite"
           >
@@ -334,6 +457,7 @@ export default function ESASForm() {
           showReset={success}
           saveLabel={ESAS_FORM_TEXT.save}
           resetLabel="Nueva evaluación"
+          className="mt-6"
         />
       </div>
 
@@ -362,6 +486,13 @@ export default function ESASForm() {
           return success;
         }}
         entityType="profesional"
+      />
+
+      <CreateCustomSymptomModal
+        isOpen={showCustomSymptomModal}
+        onClose={() => setShowCustomSymptomModal(false)}
+        onCreate={handleCreateCustomSymptom}
+        patientId={patient && patients.find((p) => p.name === patient)?.id || ""}
       />
     </form>
   );
