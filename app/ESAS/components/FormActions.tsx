@@ -19,11 +19,17 @@ export default function FormActions({
   className = "",
 }: FormActionsProps) {
   return (
-    <div className={`flex flex-col sm:flex-row gap-3 pt-4 ${className}`} style={{ borderTop: "1px solid var(--border-color)" }}>
+    <div 
+      className={`flex flex-col md:flex-row gap-4 pt-6 ${className}`} 
+      style={{ 
+        borderTop: "1px solid var(--border-color)",
+        marginTop: "var(--spacing-lg)"
+      }}
+    >
       <button
         type="submit"
         disabled={saving}
-        className="flex-1 h-12 text-base font-semibold text-white rounded-lg shadow-md transition-all hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2"
+        className="w-full md:flex-1 h-12 text-base font-semibold text-white rounded-lg shadow-md transition-all hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2"
         style={{
           background: saving ? "var(--foreground-muted)" : "var(--primary)",
         }}
@@ -42,7 +48,7 @@ export default function FormActions({
         <button
           type="button"
           onClick={onReset}
-          className="flex-1 sm:flex-none h-12 px-6 text-base font-medium rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2"
+          className="w-full md:flex-none h-12 px-6 text-base font-medium rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2"
           style={{
             background: "var(--secondary)",
             color: "var(--foreground)",

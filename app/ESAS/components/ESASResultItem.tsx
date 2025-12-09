@@ -26,22 +26,51 @@ export default function ESASResultItem({
   onDelete,
 }: ESASResultItemProps) {
   return (
-    <li className="relative border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow">
+    <li 
+      className="relative rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+      style={{
+        background: "var(--background)",
+        border: "1px solid var(--border-color)",
+      }}
+    >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+      <div 
+        className="flex items-center justify-between px-4 py-3 border-b"
+        style={{ 
+          background: "var(--background-secondary)",
+          borderColor: "var(--border-color)",
+        }}
+      >
         <div className="flex items-center gap-4">
           <div>
-            <span className="text-xs text-gray-500 dark:text-gray-400">
+            <span 
+              className="text-xs"
+              style={{ color: "var(--foreground-muted)" }}
+            >
               Paciente
             </span>
-            <p className="font-medium text-sm">{assessment.patient}</p>
+            <p 
+              className="font-medium text-sm"
+              style={{ color: "var(--foreground-strong)" }}
+            >
+              {assessment.patient}
+            </p>
           </div>
-          <div className="h-8 w-px bg-gray-200 dark:bg-gray-700" />
+          <div 
+            className="h-8 w-px"
+            style={{ background: "var(--border-color)" }}
+          />
           <div>
-            <span className="text-xs text-gray-500 dark:text-gray-400">
+            <span 
+              className="text-xs"
+              style={{ color: "var(--foreground-muted)" }}
+            >
               Fecha
             </span>
-            <p className="font-medium text-sm">
+            <p 
+              className="font-medium text-sm"
+              style={{ color: "var(--foreground-strong)" }}
+            >
               {formatDateTime(assessment.dateTime)}
             </p>
           </div>
@@ -49,7 +78,18 @@ export default function ESASResultItem({
         <button
           aria-label="Borrar registro"
           onClick={() => onDelete(assessment.id)}
-          className="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+          className="p-2 rounded-lg transition-colors"
+          style={{
+            color: "var(--foreground-muted)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = "var(--error)";
+            e.currentTarget.style.background = "var(--error-light)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = "var(--foreground-muted)";
+            e.currentTarget.style.background = "transparent";
+          }}
         >
           <TrashIcon className="w-5 h-5" />
         </button>
@@ -57,7 +97,10 @@ export default function ESASResultItem({
 
       {/* Symptoms Grid */}
       <div className="p-4">
-        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+        <p 
+          className="text-xs font-medium uppercase tracking-wider mb-3"
+          style={{ color: "var(--foreground-muted)" }}
+        >
           Síntomas
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
@@ -79,7 +122,10 @@ export default function ESASResultItem({
         {/* Custom Symptoms */}
         {assessment.customSymptoms && assessment.customSymptoms.length > 0 && (
           <>
-            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3 mt-4">
+            <p 
+              className="text-xs font-medium uppercase tracking-wider mb-3 mt-4"
+              style={{ color: "var(--foreground-muted)" }}
+            >
               Síntomas Personalizados
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
@@ -102,21 +148,41 @@ export default function ESASResultItem({
 
         {/* Notes */}
         {assessment.notes && (
-          <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
+          <div 
+            className="mt-4 pt-4 border-t"
+            style={{ borderColor: "var(--border-color)" }}
+          >
+            <p 
+              className="text-xs font-medium uppercase tracking-wider mb-1"
+              style={{ color: "var(--foreground-muted)" }}
+            >
               Notas
             </p>
-            <p className="text-sm text-gray-700 dark:text-gray-300">
+            <p 
+              className="text-sm"
+              style={{ color: "var(--foreground)" }}
+            >
               {assessment.notes}
             </p>
           </div>
         )}
 
         {/* Professional */}
-        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700 flex justify-end">
-          <span className="text-xs text-gray-500 dark:text-gray-400">
+        <div 
+          className="mt-4 pt-3 border-t flex justify-end"
+          style={{ borderColor: "var(--border-color)" }}
+        >
+          <span 
+            className="text-xs"
+            style={{ color: "var(--foreground-muted)" }}
+          >
             Evaluado por:{" "}
-            <span className="font-medium">{assessment.professional}</span>
+            <span 
+              className="font-medium"
+              style={{ color: "var(--foreground-strong)" }}
+            >
+              {assessment.professional}
+            </span>
           </span>
         </div>
       </div>
