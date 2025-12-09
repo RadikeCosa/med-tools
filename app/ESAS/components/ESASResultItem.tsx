@@ -78,17 +78,9 @@ export default function ESASResultItem({
         <button
           aria-label="Borrar registro"
           onClick={() => onDelete(assessment.id)}
-          className="p-2 rounded-lg transition-colors"
+          className="p-2 rounded-lg transition-colors hover:bg-error-light hover:text-error"
           style={{
             color: "var(--foreground-muted)",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = "var(--error)";
-            e.currentTarget.style.background = "var(--error-light)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = "var(--foreground-muted)";
-            e.currentTarget.style.background = "transparent";
           }}
         >
           <TrashIcon className="w-5 h-5" />
