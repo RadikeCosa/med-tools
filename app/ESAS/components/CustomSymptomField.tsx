@@ -38,8 +38,8 @@ export default function CustomSymptomField({
       <div className="py-4 px-2 space-y-3">
         {/* Label and Legend inputs with action buttons */}
         <div className="space-y-2 px-2">
-          <div className="flex items-center gap-2">
-            <div className="flex-1 space-y-2">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
+            <div className="flex-1 w-full space-y-2">
               <input
                 type="text"
                 value={symptom.label}
@@ -79,12 +79,12 @@ export default function CustomSymptomField({
                 }}
               />
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex md:flex-col gap-2 w-full md:w-auto">
               {onSave && patientId && (
                 <button
                   type="button"
                   onClick={handleSave}
-                  className="p-2 rounded-lg transition-colors relative"
+                  className="flex-1 md:flex-none p-2 rounded-lg transition-colors relative"
                   style={{
                     background: showSaved ? "var(--success-light)" : "var(--primary)",
                     color: showSaved ? "var(--success)" : "white",
@@ -98,7 +98,7 @@ export default function CustomSymptomField({
               <button
                 type="button"
                 onClick={onRemove}
-                className="p-2 rounded-lg transition-colors"
+                className="flex-1 md:flex-none p-2 rounded-lg transition-colors"
                 style={{
                   color: "var(--error)",
                   background: "var(--error-light)",
@@ -113,11 +113,11 @@ export default function CustomSymptomField({
         </div>
 
         {/* Slider */}
-        <div className="grid grid-cols-[2fr_auto_2fr] gap-4 items-center px-2">
-          {/* Left label */}
+        <div className="grid grid-cols-[1fr_auto_1fr] md:grid-cols-[2fr_auto_2fr] gap-2 md:gap-4 items-center px-2">
+          {/* Left label - Minimum state (0) */}
           <div className="text-left">
-            <p className="text-sm" style={{ color: "var(--foreground)" }}>
-              {symptom.legend || "Ausente"}
+            <p className="text-xs md:text-sm" style={{ color: "var(--foreground)" }}>
+              {symptom.legend ? `${symptom.legend} (0)` : "Sin síntoma (0)"}
             </p>
           </div>
 
@@ -143,8 +143,8 @@ export default function CustomSymptomField({
                   />
                   <div
                     className={`
-                      w-10 h-10 flex items-center justify-center rounded-md
-                      text-sm font-medium
+                      w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-md
+                      text-xs md:text-sm font-medium
                       border-2
                       transition-all duration-200 ease-in-out
                       ${
@@ -166,10 +166,10 @@ export default function CustomSymptomField({
             })}
           </fieldset>
 
-          {/* Right label */}
+          {/* Right label - Maximum state (10) */}
           <div className="text-right">
-            <p className="text-sm" style={{ color: "var(--foreground)" }}>
-              Lo peor posible
+            <p className="text-xs md:text-sm" style={{ color: "var(--foreground)" }}>
+              {symptom.legend ? `${symptom.legend} máximo (10)` : "Lo peor posible (10)"}
             </p>
           </div>
         </div>

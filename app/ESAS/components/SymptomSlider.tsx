@@ -27,10 +27,10 @@ export default function SymptomSlider({
 
   return (
     <div className="border-b border-gray-200 dark:border-gray-700 last:border-b-0">
-      <div className="grid grid-cols-[2fr_auto_2fr] gap-4 items-center py-4 px-2 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
+      <div className="grid grid-cols-[1fr_auto_1fr] md:grid-cols-[2fr_auto_2fr] gap-2 md:gap-4 items-center py-4 px-2 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
         {/* Left label - Minimum state */}
         <div className="text-left">
-          <p className="text-sm text-gray-700 dark:text-gray-300">{minLabel}</p>
+          <p className="text-xs md:text-sm text-gray-700 dark:text-gray-300">{minLabel}</p>
         </div>
 
         {/* Center - Number buttons */}
@@ -55,8 +55,8 @@ export default function SymptomSlider({
                 />
                 <div
                   className={`
-                    w-10 h-10 flex items-center justify-center rounded-md
-                    text-sm font-medium
+                    w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-md
+                    text-xs md:text-sm font-medium
                     border-2
                     transition-all duration-200 ease-in-out
                     ${
@@ -80,7 +80,7 @@ export default function SymptomSlider({
 
         {/* Right label - Maximum state */}
         <div className="text-right">
-          <p className="text-sm text-gray-700 dark:text-gray-300">{maxLabel}</p>
+          <p className="text-xs md:text-sm text-gray-700 dark:text-gray-300">{maxLabel}</p>
         </div>
       </div>
     </div>
